@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tool
+        http://www.springframework.org/schema/tool/spring-tool.xsd">
+    <!--
+        对应的java代码：UserDao userDao = new UserDaoImpl1();
+    -->
+    <!--扫描控制类-->
+    <context:component-scan base-package="com.example.spring_inteceptor" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--启用控制器中的注解-->
+    <mvc:annotation-driven/>
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--配置静态资源-->
+    <!--<mvc:default-servlet-handler/>-->
+    <!--<mvc:resources mapping="/static/**" location="/html/,/img/"/>-->
+    <!--<mvc:resources mapping="/css/**" location="/css/"/>-->
+    <!--<mvc:resources mapping="/js/**" location="/js/"/>-->
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--对哪些资源拦截操作-->
+        <mvc:interceptor>
+            <!--/**表示对所有资源都进行拦截操作-->
+            <mvc:mapping path="/**"/>
+            <bean class="com.example.spring_inteceptor.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
